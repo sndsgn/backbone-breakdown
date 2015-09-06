@@ -1,13 +1,14 @@
 #Backbone.js Breakdown
 
 ##A satisfactory step by step guide to creating a Backbone.js app
+##Based on the [HowsTheWeather] (https://github.com/DannyDelott/HowsTheWeather) by [Danny Delott] (https://github.com/DannyDelott)
 * * *
 
 ### Map out your architecture
 
 1. Place your main app model and view at the top
-2. On the left side place your collections and the models to which they are bound as sub elements
-3. On the right side place your view and their subviews and controllers as sub elements
+2. Below on the left side place your collections and the models to which they are bound as sub elements
+3. Below on the right side place your view and their subviews and controllers as sub elements
 4. List your events and functions
 5. Make lines between models and views indicating whether it is a binding, a function or an event to show relationships
 
@@ -32,7 +33,7 @@
    1. Instantiate the AppView and initialize and instantiate its collection 
    ```
        var App = new AppView({ 
-         collection: new CollectionName() 
+         collection: new Weather() 
        }); 
    ```
 
@@ -40,45 +41,56 @@
    1. Initialize and extend Backbone View object
    `var AppView = Backbone.View.extend({`  
    2. Specify the element to which you want to append the view
-   `el: '.app',`
+   `el: '#app',`
    3. Within an `initialize` method definition and assignment, instantiate child views, assign them as properties to the AppView object and pass in their collection to which they will be bound. At the end invoke the `render` method.
 
    ```
        initialize: function() {
+
          this.title = new TitleView();
+
+         this.input = new InputView({ 
+           collection: this.collection
+         });
+
          this.list = new ListView({
            collection: this.collection
          });
-         this.otherViewElement = new OtherViewElementView({ 
-           collection: this.collection
-         });
+
          this.render();
        }),
    ```
-
    4. Initialize the AppView `render` method, append the `el` defined earlier with each subview and return `this` which will be bound to the HTML elements representing this view that you will add to the DOM
    ```
        render: function() {
+
          this.$el.append([
            this.title.$el,
+           this.input.$el,
            this.list.$el
          ]);
+
          return this;
        }
    ```
+   5. Close your view initialization and `extend` method invocation
+   ```
+      });
+   ```
         
-4. ListEntry.js (the model - name the file whatever corresponds to your model) 
+4. WeatherEntry.js (the model - name the file whatever corresponds to your model) 
    1. Instantiate your model and extend the App's Backbone Model object with this object 
     ```
-        var ListEntry = Backbone.Model.extend({
+       var WeatherEntry = Backbone.Model.extend({
     ```
    2. Define your `defaults`
    ```
        defaults: {
-         modelDefaultPropertyVal_001 = '',
-         modelDefaultPropertyVal_002 = '',
-         modelDefaultPropertyVal_003 = ''
-         },
+         zipcode: '',
+         city: '',
+         weather: '',
+         unit: '°F'
+       },
    ```
    3. Define your `initiatlize` function
    ```
@@ -86,11 +98,21 @@
    ```
    4. Define any model methods that will be invoked from some action by the user in the model's view or another view
    ```
-       updateStatus : function() {
-         var taskStatus = this.get('status');
-         this.set({
-           'taskStatus' : taskStatus
-         });
+       toggleUnit : function() {
+         var isImperial = this.get('unit') === '°F';
+         if(isImperial) {
+           var celcius = (this.get('weather') - 32) * (5/9);
+           this.set({
+             'unit': '°C',
+             'weather' : celcius.toFixed(2)
+           });
+         } else {
+           var fahrenheit = (this.get('weather') / (5 / 9)) + 32;
+           this.set({
+             'unit': '°F',
+             'weather': fahrenheit.toFixed(2)
+           });
+         }
        }
    ```
    5. Close your model initialization and `extend` method invocation
@@ -98,23 +120,25 @@
       });
    ```
       
-5. ListEntryView.js (the model view - name the file to correspond to your model) 
+5. EntryView.js (the model view - name the file to correspond to your model) 
    1. Instantiate your model's view and extend the App's Backbone View object with this object 
     ```
-        var ListEntryView = Backbone.View.extend({
+        var EntryView = Backbone.View.extend({
     ```
    2. Define DOM element that you will bind to `el` and to which you will append HTML elements
    ```
-       className: 'list-entry',
+       className: 'entry',
    ```
    3. Initialize template HTML that you will populate with data for each model view 
    ```
-      template: _.template('<div>Status : <%= status %></div>'),
+      template: _.template('<p>It is currently <%= weather %><%= unit %> in <%= city %>.</p>'),
    ```
    4. Specify which `events` the view should listen to that happen in its view and the name of the functions that should be invoked on the model as a result
+   ```
       events: {
          'click' : 'clickAction'
       },
+   ```
    5. Define your `initiatlize` function and specify which events the view should listen for on the model and render the view once those events have occurred. Also render the view on instantiation. 
    ```
        initialize: function() {
@@ -125,24 +149,92 @@
    6. Define your `render` method, the HTML it should append to the `el` using the `template` created earlier populating the variables `<%=VARIABLE%>` with data and invoke the `html` method on `el` with the HTML template you created
    ```
        render: function() {
-         var listEntry = this.template({
-           status: this.model.get('status'),
+         var entry = this.template({
+           weather: this.model.get('weather'),
+           unit: this.model.get('unit'),
+           city: this.model.get('city')
          });
-         this.$el.html(listEntry);
+         this.$el.html(entry);
        },
    ```
    7. Define the function that should be invoked when the defined view event occurs
    ```
       clickAction: function() {
-        this.model.updateStatus();
+        this.model.toggleUnit();
       }
+   ```
    8. Close your view initialization and `extend` method invocation
    ```
       });
    ```
  
-           
- 
+6. InputView.js (the view associated with the input not tied to a model) 
+   1. Instantiate your model's view and extend the App's Backbone View object with this object 
+    ```
+        var InputView = Backbone.View.extend({
+    ```
+   2. Define DOM element that you will bind to `el` and to which you will append HTML elements
+   ```
+       tagName: 'input',
+        // Same as el: '<input>',
+   ```
+   3. Specify which `events` the view should listen to that happen in its view and the name of the functions that should be invoked on the model as a result
+   ```
+        events: {
+          'keydown': 'keyAction',
+        },
+   ```
+   4. Define your `initiatlize` function and invoke the render method to render the view
+   ```
+        initialize: function() {
+          this.render();
+        },
+   ```
+   5. Initialize the `render` method and invoke other functions required during re-render of the view 
+   ```
+        render: function() {
+          this.resetInput();
+          return this;
+        },
+   ```
+   6. Define the functions that should be invoked when the defined view event occurs
+   ```
+        keyAction: function(e) {
+
+          var isEnterKey = (e.which === 13);
+
+          if(isEnterKey && !this.$el.val().trim().match(/^(?=.*[0-9].*)[0-9]{5}$/)) {
+
+            this.$el.attr({
+              placeholder: 'Sorry, zip code invalid.'
+            });
+            this.clearInput();
+
+          } else if(isEnterKey) {
+
+            this.collection.addWeatherEntry(this.$el.val());
+            this.resetInput();
+
+          }
+
+        },
+
+        resetInput: function() {
+          this.$el.attr({
+            placeholder: 'Enter a zip code'
+          });
+          this.clearInput();
+        },
+
+        clearInput: function() {
+          this.$el.val('');
+        }
+
+   ```
+   8. Close your view initialization and `extend` method invocation
+   ```
+      });
+   ```
 
 
 
