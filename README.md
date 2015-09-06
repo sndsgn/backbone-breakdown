@@ -1,7 +1,7 @@
 #Backbone.js Breakdown
 
 ##A satisfactory step by step guide to creating a Backbone.js app
-##Based on the [HowsTheWeather] (https://github.com/DannyDelott/HowsTheWeather) by [Danny Delott] (https://github.com/DannyDelott)
+####Based on the [HowsTheWeather App] (https://github.com/DannyDelott/HowsTheWeather) by [Danny Delott] (https://github.com/DannyDelott)
 * * *
 
 ### Map out your architecture
@@ -232,6 +232,47 @@
 
    ```
    8. Close your view initialization and `extend` method invocation
+   ```
+      });
+   ```
+7. ListView.js (the view associated with the WeatherEntry model) 
+   1. Instantiate your model's view and extend the App's Backbone View object with this object 
+    ```
+        var ListView = Backbone.View.extend({
+    ```
+   2. Define DOM element that you will bind to `el` and to which you will append HTML elements
+   ```
+       id: 'list',
+   ```
+   3. Define your `initiatlize` function and specify which events the view should listen for on the model and render the view once those events have occurred.
+   ```
+       initialize: function() {
+         this.listenTo(this.model, 'add', this.render);
+         //Same as this.collection.on('add', this.render, this);
+       },
+   ```
+   4. Initialize your `render` method, run the `empty` method on the `el` element to clear it of child elements previously appended, create a property that instantiates an entry view for each model object in the collection, for each entry view created for each model create a jQuery `$els` that is an array that contains and initializes a jQuery element `$el` for each EntryView, then then append each of those jQuery DOM element to the DOM element defined as `$el`, and then adds those elements to the DOM
+   ```
+       render: function() {
+
+        this.$el.empty();
+
+        this.entries = this.collection.models.map(function(model) {
+          return new EntryView({
+            model: model
+          });
+        });
+
+        var $els = this.entries.map(function(entry) {
+          return entry.$el;
+        });
+
+        this.$el.append($els);
+
+        return this;
+      }
+  ```
+   5. Close your view initialization and `extend` method invocation
    ```
       });
    ```
