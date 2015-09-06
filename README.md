@@ -25,11 +25,11 @@
 2. App.js 
   
    - Instantiate the AppView and initialize and instantiate its collection 
-   - ```
+   ```
          var App = new AppView({ 
            collection: new CollectionName() 
          }); 
-     ```
+   ```
 
 3. AppView.js
    - Initialize and extend Backbone View object
@@ -37,14 +37,14 @@
    - Specify the element to which you want to append the view
          el: '.app',
    - Within an *`initialize`* method definition and assignment, instantiate child views, assign them as properties to the AppView object and pass in their collection to which they will be bound. At the end invoke the `render` method.
-   - ```
+   ```
          initialize: function() {
            this.title = new TitleView();
            this.list = new ListView({collection: this.collection});
            this.otherViewElement = new OtherViewElementView({collection: this.collection});
            this.render();
          });
-     ```
+   ```
 
 
 
