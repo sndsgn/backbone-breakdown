@@ -314,7 +314,7 @@
    ```
      model: WeatherEntry,
    ```
-   - Initialize a method which takes the user defined input from the input view and pass it as a variable to the API URL. Add the values return by the API call to the `zipcode`, `city`, and `weather` properties. Ensure you bind this in the API retrieval method to the model object and not the global object which in this case would be the window.
+   - Initialize a method which takes the user defined input from the input view and passes it as a variable to the API URL. Add the values returned by the API call to the `zipcode`, `city`, and `weather` properties accessing the response via the `data` paraemeter passed to the callback function in the AJAX request. Ensure you bind `this` in the API retrieval method to the model object and not the global object which in this case would be the window.
    ```
         addWeatherEntry: function(zipcode) {
 
