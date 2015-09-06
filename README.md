@@ -118,19 +118,24 @@
          this.render();
        },
    ```
-   5. Define your `render` method, the HTML it should append to the `el` using the `template` method and invoke the `html()` method on `el`
+   5. Define your `render` method, the HTML it should append to the `el` using the `template` method and invoke the `html()` method on `el` with the variable you created
    ```
        render: function() {
          var listEntry = this.template({
-           date: this.model.get('status'),
+           status: this.model.get('status'),
          });
-
-
-
-
+         this.$el.html(listEntry);
+       },
+   ```
+   6. Specify the function that should be invoked when the defined view event occurs
+   ```
+      clickAction: function() {
+        this.model.updateStatus();
+      }
    7. Close your model initialization and `extend` method invocation
    ```
-      });
+   });
+   ```
  
            
  
