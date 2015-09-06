@@ -98,7 +98,7 @@
       });
    ```
       
-5. ListEntryView.js (the model view- name the file whatever corresponds to your model) 
+5. ListEntryView.js (the model view - name the file to correspond to your model) 
    1. Instantiate your model's view and extend the App's Backbone View object with this object 
     ```
         var ListEntryView = Backbone.View.extend({
@@ -107,18 +107,22 @@
    ```
        className: 'list-entry',
    ```
-   3. Specify which `events` the view should listen to that happen in its view and the name of the functions that should be invoked on the model
+   3. Initialize template HTML that you will populate with data for each model view 
+   ```
+      template: _.template('<div>Status : <%= status %></div>'),
+   ```
+   4. Specify which `events` the view should listen to that happen in its view and the name of the functions that should be invoked on the model as a result
       events: {
          'click' : 'clickAction'
       },
-   4. Define your `initiatlize` function and specify which events the view should listen for on the model and render the view 
+   5. Define your `initiatlize` function and specify which events the view should listen for on the model and render the view once those events have occurred. Also render the view on instantiation. 
    ```
        initialize: function() {
          this.listenTo(this.model, 'change', this.render);
          this.render();
        },
    ```
-   5. Define your `render` method, the HTML it should append to the `el` using the `template` method and invoke the `html()` method on `el` with the variable you created
+   6. Define your `render` method, the HTML it should append to the `el` using the `template` created earlier populating the variables `<%=VARIABLE%>` with data and invoke the `html` method on `el` with the HTML template you created
    ```
        render: function() {
          var listEntry = this.template({
@@ -127,14 +131,14 @@
          this.$el.html(listEntry);
        },
    ```
-   6. Specify the function that should be invoked when the defined view event occurs
+   7. Define the function that should be invoked when the defined view event occurs
    ```
       clickAction: function() {
         this.model.updateStatus();
       }
-   7. Close your model initialization and `extend` method invocation
+   8. Close your view initialization and `extend` method invocation
    ```
-   });
+      });
    ```
  
            
