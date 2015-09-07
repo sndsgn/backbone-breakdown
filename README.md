@@ -10,18 +10,18 @@
   - Main App Model - pass an instantiated AppView an instantiated collection object and assign this to an app variable
   - Main App View 
     - Specify the `el` to which you will append sub views
-    - Instantiate the sub views, assign them to properties on the AppView, pass the instantiation the collection bound to the AppView and then render the view with an invocation of `render` 
+    - Define the `initialize` method in which you instantiate the sub views, assign them to properties on the AppView, pass the instantiation the collection bound to the AppView and then render the view with an invocation of `render` 
     - Define the `render` method in which you append all the views to the specified `el` and then return `this` which is the AppView with all of the appended elements
   - Controllers or View which receive input from the user
     - `el` - Specify the `el` to which you will append elements 
     - `template` - Specify a `template` to which you will populate with user input data if requested in the view 
     - `events` - Define `events` that the view should listen for and the methods that should be invoked
-    - `initialize` - Define the `initialize` method which will specify which event it will listen to on the model or from the user and what it should do once those events occur. This almost always includes invoking `render`.
+    - `initialize` - Define the `initialize` method which will specify which event the controller will listen to on the model or from the user and what it should do once those events occur. This almost always includes invoking `render`.
     - `render` - Define a `render` method which will populate the template with data and append the view `el` defined element with HTML
-    - View event methods - define the methods that should be invokded on the model when the specified event occurs
+    - View event methods - define the methods that should be invoked on the model when the specified event occurs
   - Sub View to main App View
     - `el` - Specify the `el` to which you will append elements 
-    - `initialize` - Define the `initialize` method which will specify which event it will listen to on the model and what it should do once those events occur. This almost always includes invoking render.
+    - `initialize` - Define the `initialize` method which will specify which event the view will listen to on the model and what it should do once those events occur. This almost always includes invoking render.
     - `render` - Define a `render` method which will populate the template with data and append the view `el` defined element with HTML
   - Model
     - `defaults` - define default values and instantiate those variables
