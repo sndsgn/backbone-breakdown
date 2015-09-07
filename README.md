@@ -2,7 +2,8 @@
 
 ##A satisfactory step by step guide to creating a Backbone.js app
 ####Based on the [HowsTheWeather App] (https://github.com/DannyDelott/HowsTheWeather) by [Danny Delott] (https://github.com/DannyDelott)
-#####There are many ways to create an app with Backbone.js. This is one implementation.
+#####There are many ways to create an app with Backbone.js. This is one implementation, not 'the implementation'.
+######If you see a typo or a way to improve this document, please make a pull request
 * * *
 
 ### General patterns in this impelentation
