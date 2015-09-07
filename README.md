@@ -7,7 +7,7 @@
 * * *
 
 ### General patterns in this impelentation
-  - Main App Model - pass the AppView an instantiated collection and assign this to a variable
+  - Main App Model - pass an instantiated AppView an instantiated collection object and assign this to an app variable
   - Main App View 
     - Specify the `el` to which you will append sub views
     - Instantiate the sub views, assign them to properties on the AppView, pass the instantiation the collection bound to the AppView and then render the view with an invocation of `render` 
@@ -16,13 +16,13 @@
     - `el` - Specify the `el` to which you will append elements 
     - `template` - Specify a `template` to which you will populate with user input data if requested in the view 
     - `events` - Define `events` that the view should listen for and the methods that should be invoked
-    - `initialize` - Define the `initialize` method which will specify which event it will listen to on the model and what it should do once those events occur. This almost always includes invoking render.
-    - `render` - Define a `render` method which will populate the template with data and append the view with HTML
+    - `initialize` - Define the `initialize` method which will specify which event it will listen to on the model or from the user and what it should do once those events occur. This almost always includes invoking `render`.
+    - `render` - Define a `render` method which will populate the template with data and append the view `el` defined element with HTML
     - View event methods - define the methods that should be invokded on the model when the specified event occurs
   - Sub View to main App View
     - `el` - Specify the `el` to which you will append elements 
     - `initialize` - Define the `initialize` method which will specify which event it will listen to on the model and what it should do once those events occur. This almost always includes invoking render.
-    - `render` - Define a `render` method which will populate the template with data and append the view with HTML
+    - `render` - Define a `render` method which will populate the template with data and append the view `el` defined element with HTML
   - Model
     - `defaults` - define default values and instantiate those variables
     - `initialize` - initialize the model
