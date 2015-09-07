@@ -30,7 +30,7 @@
   - Collection:
     - `model` - specify the model bound to the collection
     - Collection methods - define methods that act on the entire collection.
-    - AJAX and APIS - if using API you can populate the models in the collection with the data pulled from the API and make your request with a collection method
+    - AJAX and APIs - if using API you can populate the models in the collection with the data pulled from the API and make your request with a collection method
     - If making a call to an API make sure to add `.bind(this)` to the end of the AJAX request
 
 
